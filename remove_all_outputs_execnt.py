@@ -15,7 +15,9 @@ def main(argv):
                 # filename loop
                 for filename in filename_list:
                     if '.ipynb' == os.path.splitext(filename)[-1]:
-                        print(os.path.join(dir_name, filename))
+                        nb_path = os.path.join(dir_name, filename)
+                        print('process %s' % nb_path)
+                        ir.process_nb_file(nb_path)
     else:
         # pass?
         ValueError('path not given')
