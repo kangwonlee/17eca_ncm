@@ -6,9 +6,14 @@ def main():
     x = np.matrix([[3, 2]]).T
     y = np.matrix([[7, -4]]).T
 
+    k = 0
+
     # find u bisecting x and x axis
     sigma = np.sqrt((x.T * x)[0, 0])
-    u = x + sigma * np.matrix([[1, 0]]).T
+    e_k = np.matrix(np.zeros_like(x))
+    e_k[k, 0] = 1.0
+
+    u = x + sigma * e_k
 
     # Householder reflection
     rho = (2 / (u.T * u))[0, 0]
