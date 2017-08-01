@@ -8,10 +8,7 @@ def main():
 
     k = 0
 
-    Hx, rho, u = householder_k(x, k)
-
-    tau_y = (rho * u.T * y)[0, 0]
-    Hy = y - tau_y * u
+    Hx, Hy, u = householder_xy(x, y, k)
 
     # prepare data to draw figure
     x_arrow = [[0, 0], x.T.tolist()[0]]
@@ -61,6 +58,15 @@ def main():
 
     # present plot
     plt.show()
+
+
+def householder_xy(x, y, k):
+    Hx, rho, u = householder_k(x, k)
+
+    tau_y = (rho * u.T * y)[0, 0]
+    Hy = y - tau_y * u
+
+    return Hx, Hy, u
 
 
 def householder_k(x, k):
