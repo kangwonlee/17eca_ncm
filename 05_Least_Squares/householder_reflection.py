@@ -61,6 +61,14 @@ def main():
 
 
 def householder_xy(x, y, k):
+    """
+    Householder reflection such that Hx points to kth axis
+    
+    :param numpy.matrix x: 
+    :param numpy.matrix y: 
+    :param int k: 
+    :return: 
+    """
     Hx, rho, u = householder_k(x, k)
 
     tau_y = (rho * u.T * y)[0, 0]
