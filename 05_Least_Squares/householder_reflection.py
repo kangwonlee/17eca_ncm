@@ -114,7 +114,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     :param numpy.matrix mat_a: 
     :param numpy.matrix mat_b: 
     :param bool b_step: 
-    :return: R, bout
+    :return: R, bout, residual
     """
 
     # check type
@@ -183,7 +183,8 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
         if b_step:
             present_step()
 
-    return mat_a, mat_b
+    # return economical R
+    return mat_a[:size_n, :], mat_b[:size_n, :], mat_b[size_n:, :]
 
 
 def main_qrsteps():
