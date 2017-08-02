@@ -120,8 +120,6 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     # check type
     assert isinstance(mat_a, np.matrix)
     assert isinstance(mat_b, np.matrix) or (mat_b is None)
-    if isinstance(mat_b, np.matrix) :
-        assert (1 == mat_b.shape[1])
 
     size_m, size_n = mat_a.shape
 
