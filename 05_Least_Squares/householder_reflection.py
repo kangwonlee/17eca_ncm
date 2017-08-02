@@ -145,5 +145,17 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
         #if sigma
 
 
+def main_qrsteps():
+    # data from C. Moler, Numerical computation with MATLAB, SIAM, 2008.
+    s = (np.matrix([np.arange(1950, 2000 + 1, 10)]).T - 1950.0) / 50
+    y = np.matrix([np.array([150.6970, 179.3230, 203.2120, 226.5050, 249.6330, 281.4220])]).T
+    print('     s                   y')
+    print(np.column_stack([s, y]))
+
+    X = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
+
+    qrsteps(X, y)
+
+
 if __name__ == '__main__':
     main()
