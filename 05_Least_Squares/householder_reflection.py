@@ -165,17 +165,23 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             mat_a[index_k, index_k] = -sigma_scala
 
             # remaining columns
+            row_begin = index_k
+            column_begin = index_k + 1
+
             # tau[1, n] = rho * u.T[1, m] * x[m, n]
-            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[index_k:, (index_k + 1):])
+            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[row_begin:, column_begin:])
             # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
-            mat_a[index_k:, (index_k + 1):] += (col_vec_u * (-row_vec_tau_x))
+            mat_a[row_begin:, column_begin:] += (col_vec_u * (-row_vec_tau_x))
 
             # transform b
             if mat_b is not None:
+                row_begin = index_k
+                column_begin = 0
+
                 # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
-                row_vec_tau_y = rho_scala * (col_vec_u.T * mat_b[index_k:, :])
+                row_vec_tau_y = rho_scala * (col_vec_u.T * mat_b[row_begin:, column_begin:])
                 # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
-                mat_b[index_k:, :] += (col_vec_u * (-row_vec_tau_y))
+                mat_b[row_begin:, column_begin:] += (col_vec_u * (-row_vec_tau_y))
         # end if sigma_scala
         if b_step:
             present_step()
