@@ -99,5 +99,23 @@ def householder_k(x, k):
     return Hx, rho, u
 
 
+def qrsteps(mat_a, mat_b=None, b_step=False):
+    """
+    Orthogonal-triangular decomposition.
+    Demonstrates Python + Numpy version of QR function.
+    R is the upper trapezoidal matrix R that
+    results from the orthogonal transformation, R = Q'*A.
+    If b_step = True, this function shows the steps in
+    the computation of R.  Press <enter> key after each step.
+    
+    Ref : QRSTEPS by Prof. Cleve Moler
+    
+    :param numpy.matrix mat_a: 
+    :param numpy.matrix mat_b: 
+    :param bool b_step: 
+    :return: R, bout
+    """
+
+
 if __name__ == '__main__':
     main()
