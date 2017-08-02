@@ -88,9 +88,13 @@ def householder_k(x, k):
     """
     # find u bisecting x and x axis
     sigma = na.norm(x)
-    e_k = np.matrix(np.zeros_like(x))
-    e_k[k, 0] = 1.0
-    u = x + sigma * e_k
+    u = x + 0.0
+
+    if u[k, 0]:
+        sigma *= np.sign(u[k, 0])
+
+    u = x + 0.0
+    u[k, 0] += sigma
 
     # Householder reflection
     # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
