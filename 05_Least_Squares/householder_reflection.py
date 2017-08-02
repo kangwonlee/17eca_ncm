@@ -148,6 +148,8 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             if vec_u_k[0, 0]:
                 sigma_scala *= np.sign(vec_u_k[0, 0])
 
+            # u = x + sigma e_k
+            # hence, .copy() above is necessary
             vec_u_k[0, 0] += sigma_scala
 
             # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u_k)
