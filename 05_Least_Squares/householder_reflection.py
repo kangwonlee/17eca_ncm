@@ -177,16 +177,8 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
             # transform b
             if mat_b is not None:
-                # print('mat_b.shape = %s' % repr(mat_b.shape))
-                # print('mat_b[index_array_i, 0].shape = %s' % repr(mat_b[index_array_i, 0].shape))
-                # print('mat_u.shape = %s' % repr(mat_u.shape))
-
-                mat_b_i_rows = mat_b[index_array_i, 0]
-
-                tau = rho * (mat_u.T * mat_b_i_rows)[0, 0]
-                # print('(-tau * mat_u).shape = %s' % repr((-tau * mat_u).shape))
-                # print('(mat_b[index_array_i, 0]).shape = %s' % repr((mat_b[index_array_i, 0]).shape))
-                mat_b_i_rows += (-tau * mat_u)
+                tau = rho * (mat_u.T * mat_b[index_k:size_m, 0])[0, 0]
+                mat_b[index_k:size_m, 0] += (-tau * mat_u)
         # end if sigma
         if b_step:
             present_step()
