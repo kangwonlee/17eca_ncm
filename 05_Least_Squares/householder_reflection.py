@@ -121,7 +121,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     assert isinstance(mat_a, np.matrix)
     assert isinstance(mat_b, np.matrix) or (mat_b is None)
 
-    size_m, size_m = mat_a.shape
+    size_m, size_n = mat_a.shape
 
     def present_step():
         print('mat_a = %r' % mat_a)
@@ -132,7 +132,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     if b_step:
         present_step()
 
-    for index_k in range(0, min([size_m-1, size_m])):
+    for index_k in range(0, min([size_m-1, size_n])):
         # make elements below diagonal in the kth column
         # Householder transformation
 
