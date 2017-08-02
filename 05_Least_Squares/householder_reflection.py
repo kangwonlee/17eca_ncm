@@ -196,11 +196,21 @@ def main_qrsteps():
 
     mat_x = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
 
-    mat_r, mat_z, mat_residual = qrsteps(mat_x, y, True)
-    print('mat_residual = \n%s' % repr(mat_residual))
+    mat_qr_r, mat_qr_z, mat_residual_qr = qrsteps(mat_x, y, False)
+    mat_beta_qr = na.solve(mat_qr_r, mat_qr_z)
+    mat_y_x_beta = y - mat_x * mat_beta_qr
 
-    beta = na.solve(mat_r, mat_z)
-    print('beta = \n%s' % repr(beta))
+    mat_beta_ls, residual_ls, rank_ls, s_ls = na.lstsq(mat_x, y)
+
+    print('mat_beta_qr = \n%s' % repr(mat_beta_qr))
+    print('mat_beta_ls = \n%s' % repr(mat_beta_ls))
+
+    print('mat_residual_qr = \n%s' % repr(mat_residual_qr))
+    print('mat_y_x_beta = \n%s' % repr(mat_y_x_beta))
+    print('na.norm(mat_residual_qr) = \n%s' % repr(na.norm(mat_residual_qr)))
+    print('na.norm(mat_y_x_beta) = \n%s' % repr(na.norm(mat_y_x_beta)))
+    print('residual_ls = \n%s' % repr(residual_ls))
+    print('np.sqrt(residual_ls) = \n%s' % repr(np.sqrt(residual_ls)))
 
 
 if __name__ == '__main__':
