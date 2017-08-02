@@ -156,7 +156,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             mat_a[index_k, index_k] = -sigma
 
             # remaining columns
-            index_array_j = np.arange(index_k + 1, size_m, dtype=int)
+            index_array_j = np.arange(index_k + 1, size_n, dtype=int)
 
             print('(before) mat_a= %s' % repr(mat_a))
             print('mat_a.shape = %r' % repr(mat_a.shape))
