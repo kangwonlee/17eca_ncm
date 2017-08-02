@@ -138,39 +138,63 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
         if b_step:
             print(('make elements below diagonal in the %d-th column ' % (index_k + 1)).ljust(60, '='))
 
-        # Householder transformation
-        # for kth iteration, operate on mat_a[k:m, k:n]
-        col_vec_u = mat_a[index_k:, index_k].copy()
-        sigma_scala = na.norm(col_vec_u)
+        qr_step_inplace(index_k, mat_a, mat_b)  # end if sigma_scala
 
-        # skip if column already zero
-        if sigma_scala:
-            if col_vec_u[0, 0]:
-                sigma_scala *= np.sign(col_vec_u[0, 0])
-
-            # u = x + sigma e_k
-            # hence, .copy() above is necessary
-            col_vec_u[0, 0] += sigma_scala
-
-            # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
-            rho_scala = 1 / (np.conj(sigma_scala) * col_vec_u[0, 0])
-
-            # kth column
-            mat_a[index_k:, index_k] = 0.0
-            mat_a[index_k, index_k] = -sigma_scala
-
-            # remaining columns
-            get_hx_inplace(index_k, index_k + 1, rho_scala, col_vec_u, mat_a)
-
-            # transform b
-            if mat_b is not None:
-                get_hx_inplace(index_k, 0, rho_scala, col_vec_u, mat_b)
-        # end if sigma_scala
         if b_step:
             present_step(mat_a, mat_b)
 
     # return economical R
     return mat_a[:n_width_a, :], mat_b[:n_width_a, :], mat_b[n_width_a:, :]
+
+
+def qr_step_inplace(index_k, mat_a, mat_b=None):
+    """
+    One iteration of QR step
+    
+    u = A[k:, k]
+    sigma = ||u||^2
+    if u[0]:
+        sigma *= sign(u[0])
+    u[0] += sigma
+    
+    rho = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
+    
+    tau[1, n] = rho * u.T[1, m] * x[m, n]
+    Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
+    
+    :param int index_k: 
+    :param numpy.matrix mat_a: 
+    :param numpy.matrix | None mat_b: 
+    :return: None
+    """
+
+    # Householder transformation
+    # for kth iteration, operate on mat_a[k:m, k:n]
+    col_vec_u = mat_a[index_k:, index_k].copy()
+    sigma_scala = na.norm(col_vec_u)
+
+    # skip if column already zero
+    if sigma_scala:
+        if col_vec_u[0, 0]:
+            sigma_scala *= np.sign(col_vec_u[0, 0])
+
+        # u = x + sigma e_k
+        # hence, .copy() above is necessary
+        col_vec_u[0, 0] += sigma_scala
+
+        # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
+        rho_scala = 1 / (np.conj(sigma_scala) * col_vec_u[0, 0])
+
+        # kth column
+        mat_a[index_k:, index_k] = 0.0
+        mat_a[index_k, index_k] = -sigma_scala
+
+        # remaining columns
+        get_hx_inplace(index_k, index_k + 1, rho_scala, col_vec_u, mat_a)
+
+        # transform b
+        if mat_b is not None:
+            get_hx_inplace(index_k, 0, rho_scala, col_vec_u, mat_b)
 
 
 def present_step(mat_a, mat_b):
