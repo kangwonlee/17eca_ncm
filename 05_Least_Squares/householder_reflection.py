@@ -4,6 +4,7 @@ import numpy.linalg as na
 
 
 def main_householder():
+    # Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
     x = np.matrix([[3, 2]]).T
     y = np.matrix([[7, -4]]).T
 
@@ -64,6 +65,8 @@ def main_householder():
 def householder_xy(x, y, k):
     """
     Householder reflection such that Hx points to kth axis
+
+    Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
     
     :param numpy.matrix x: 
     :param numpy.matrix y: 
@@ -81,6 +84,8 @@ def householder_xy(x, y, k):
 def householder_k(x, k):
     """
     Householder reflection such that Hx points to kth axis
+
+    Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
     
     :param numpy.matrix x: 
     :param int k: 
@@ -117,7 +122,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     If b_step = True, this function shows the steps in
     the computation of R.  Press <enter> key after each step.
     
-    Ref : QRSTEPS by Prof. Cleve Moler
+    Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
     
     :param numpy.matrix mat_a: 
     :param numpy.matrix mat_b: 
@@ -162,6 +167,8 @@ def qr_step_inplace(index_k, mat_a, mat_b=None):
     tau[1, n] = rho * u.T[1, m] * x[m, n]
     Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
     
+    Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
+    
     :param int index_k: 
     :param numpy.matrix mat_a: 
     :param numpy.matrix | None mat_b: 
@@ -198,6 +205,8 @@ def qr_step_inplace(index_k, mat_a, mat_b=None):
 
 
 def present_step(mat_a, mat_b):
+    # Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
+
     print('mat_a = \n%r' % mat_a)
     if (mat_b is not None):
         print('mat_b = \n%r' % mat_b)
@@ -208,6 +217,8 @@ def get_hx_inplace(row_begin, column_begin, rho_scala, col_vec_u, mat_x):
     tau[1, n] = rho * u.T[1, m] * x[m, n]
     Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
     
+    Ref : C. Moler, Numerical computation with MATLAB, SIAM, 2008.
+
     :param int row_begin: 
     :param int column_begin: 
     :param float rho_scala: 
