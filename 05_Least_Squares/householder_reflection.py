@@ -165,13 +165,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             mat_a[index_k, index_k] = -sigma_scala
 
             # remaining columns
-            row_begin = index_k
-            column_begin = index_k + 1
-
-            # tau[1, n] = rho * u.T[1, m] * x[m, n]
-            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[row_begin:, column_begin:])
-            # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
-            mat_a[row_begin:, column_begin:] += (col_vec_u * (-row_vec_tau_x))
+            get_hx_inplace(index_k, index_k + 1, rho_scala, col_vec_u, mat_a)
 
             # transform b
             if mat_b is not None:
@@ -188,6 +182,24 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
     # return economical R
     return mat_a[:n_width_a, :], mat_b[:n_width_a, :], mat_b[n_width_a:, :]
+
+
+def get_hx_inplace(row_begin, column_begin, rho_scala, col_vec_u, mat_x):
+    """
+    tau[1, n] = rho * u.T[1, m] * x[m, n]
+    Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
+    
+    :param int row_begin: 
+    :param int column_begin: 
+    :param float rho_scala: 
+    :param numpy.matrix col_vec_u: 
+    :param numpy.matrix mat_x: 
+    :return: None
+    """
+    # tau[1, n] = rho * u.T[1, m] * x[m, n]
+    row_vec_tau = rho_scala * (col_vec_u.T * mat_x[row_begin:, column_begin:])
+    # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
+    mat_x[row_begin:, column_begin:] += (col_vec_u * (-row_vec_tau))
 
 
 def main_qrsteps():
