@@ -145,20 +145,20 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
         # Householder transformation
         # for kth iteration, operate on mat_a[k:m, k:n]
-        vec_u_k = mat_a[index_k:m_height_a, index_k].copy()
-        sigma_scala = na.norm(vec_u_k)
+        col_vec_u = mat_a[index_k:m_height_a, index_k].copy()
+        sigma_scala = na.norm(col_vec_u)
 
         # skip if column already zero
         if sigma_scala:
-            if vec_u_k[0, 0]:
-                sigma_scala *= np.sign(vec_u_k[0, 0])
+            if col_vec_u[0, 0]:
+                sigma_scala *= np.sign(col_vec_u[0, 0])
 
             # u = x + sigma e_k
             # hence, .copy() above is necessary
-            vec_u_k[0, 0] += sigma_scala
+            col_vec_u[0, 0] += sigma_scala
 
             # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
-            rho_scala = 1 / (np.conj(sigma_scala) * vec_u_k[0, 0])
+            rho_scala = 1 / (np.conj(sigma_scala) * col_vec_u[0, 0])
 
             # kth column
             mat_a[index_k:m_height_a, index_k] = 0.0
@@ -166,16 +166,16 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
             # remaining columns
             # tau[1, n] = rho * u.T[1, m] * x[m, n]
-            row_vec_tau_x = rho_scala * (vec_u_k.T * mat_a[index_k:m_height_a, (index_k + 1):n_width_a])
+            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[index_k:m_height_a, (index_k + 1):n_width_a])
             # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
-            mat_a[index_k:m_height_a, (index_k + 1):n_width_a] += (vec_u_k * (-row_vec_tau_x))
+            mat_a[index_k:m_height_a, (index_k + 1):n_width_a] += (col_vec_u * (-row_vec_tau_x))
 
             # transform b
             if mat_b is not None:
                 # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
-                tau = rho_scala * (vec_u_k.T * mat_b[index_k:m_height_a, :])
+                tau = rho_scala * (col_vec_u.T * mat_b[index_k:m_height_a, :])
                 # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
-                mat_b[index_k:m_height_a, :] += (vec_u_k * (-tau))
+                mat_b[index_k:m_height_a, :] += (col_vec_u * (-tau))
         # end if sigma_scala
         if b_step:
             present_step()
