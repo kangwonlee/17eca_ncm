@@ -165,15 +165,15 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             print('index_array_i = \n%s' % repr(index_array_i))
             print('index_array_j = \n%s' % repr(index_array_j))
 
-            mat_a_i_rows = mat_a[index_array_i, :]
-            mat_a_ij = mat_a_i_rows[:, index_array_j]
-            print('(before) mat_a_ij = %s' % repr(mat_a_ij))
+            # mat_a_i_rows = mat_a[index_k:size_m, (index_k + 1):size_n]
+            # mat_a_ij = mat_a_i_rows[:, index_array_j]
+            # print('(before) mat_a_ij = %s' % repr(mat_a_ij))
 
-            mat_v = rho * (mat_u.T * mat_a_ij)
-            mat_a_ij += ((mat_u * mat_v) * -1)
+            mat_v = rho * (mat_u.T * mat_a[index_k:size_m, (index_k + 1):size_n])
+            mat_a[index_k:size_m, (index_k + 1):size_n] += ((mat_u * mat_v) * -1)
 
-            print('(after) mat_a_ij = %s' % repr(mat_a_ij))
-            print('(after) mat_a= %s' % repr(mat_a))
+            # print('(after) mat_a_ij = %s' % repr(mat_a_ij))
+            print('(after) mat_a= \n%s' % repr(mat_a))
 
             # transform b
             if mat_b is not None:
