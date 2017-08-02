@@ -173,9 +173,9 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             # transform b
             if mat_b is not None:
                 # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
-                tau = rho_scala * (col_vec_u.T * mat_b[index_k:, :])
+                row_vec_tau_y = rho_scala * (col_vec_u.T * mat_b[index_k:, :])
                 # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
-                mat_b[index_k:, :] += (col_vec_u * (-tau))
+                mat_b[index_k:, :] += (col_vec_u * (-row_vec_tau_y))
         # end if sigma_scala
         if b_step:
             present_step()
