@@ -93,7 +93,8 @@ def householder_k(x, k):
     u = x + sigma * e_k
 
     # Householder reflection
-    rho = (2 / (u.T * u))[0, 0]
+    # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
+    rho = 1.0 / (sigma * u[k, 0])
 
     # if x.shape == [m, n]: tau[1, n] = rho * u.T[1, m] * x[m, n]
     tau_x = (rho * u.T * x)
@@ -152,7 +153,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             # hence, .copy() above is necessary
             vec_u_k[0, 0] += sigma_scala
 
-            # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u_k)
+            # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u[k])
             rho_scala = 1 / (np.conj(sigma_scala) * vec_u_k[0, 0])
 
             # kth column
