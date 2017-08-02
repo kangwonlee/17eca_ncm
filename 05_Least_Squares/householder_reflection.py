@@ -72,8 +72,8 @@ def householder_xy(x, y, k):
     """
     Hx, rho, u = householder_k(x, k)
 
-    tau_y = (rho * u.T * y)[0, 0]
-    Hy = y - tau_y * u
+    tau_y = (rho * u.T * y)
+    Hy = y + u * (-tau_y)
 
     return Hx, Hy, u
 
@@ -94,8 +94,11 @@ def householder_k(x, k):
 
     # Householder reflection
     rho = (2 / (u.T * u))[0, 0]
-    tau_x = (rho * u.T * x)[0, 0]
-    Hx = x - tau_x * u
+
+    # if x.shape == [m, n]: tau[1, n] = rho * u.T[1, m] * x[m, n]
+    tau_x = (rho * u.T * x)
+    # if x.shape == [m, n]: Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
+    Hx = x + u * (-tau_x)
 
     return Hx, rho, u
 
