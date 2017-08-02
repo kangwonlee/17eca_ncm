@@ -158,18 +158,20 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             # remaining columns
             index_array_j = np.arange(index_k + 1, size_m, dtype=int)
 
-            print('(before) mat_a= %s' % str(mat_a))
-            print('mat_a.shape = %r' % str(mat_a.shape))
+            print('(before) mat_a= %s' % repr(mat_a))
+            print('mat_a.shape = %r' % repr(mat_a.shape))
             print('index_array_i = %r' % index_array_i)
             print('index_array_j = %r' % index_array_j)
 
             mat_a_i_rows = mat_a[index_array_i, :]
             mat_a_ij = mat_a_i_rows[:, index_array_j]
+            print('(before) mat_a_ij = %s' % repr(mat_a_ij))
 
             mat_v = rho * (mat_u.T * mat_a_ij)
             mat_a_ij += ((mat_u * mat_v) * -1)
 
-            print('(after) mat_a= %s' % str(mat_a))
+            print('(after) mat_a_ij = %s' % repr(mat_a_ij))
+            print('(after) mat_a= %s' % repr(mat_a))
 
             # transform b
             if mat_b is not None:
