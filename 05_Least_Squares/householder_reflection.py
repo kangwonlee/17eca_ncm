@@ -138,38 +138,37 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             print(('make elements below diagonal in the %d-th column ' % (index_k + 1)).ljust(60, '='))
 
         # Householder transformation
-        index_array_i = np.arange(index_k, size_m, dtype=int)
-        mat_u = mat_a[index_array_i, index_k].copy()
-        sigma = na.norm(mat_u)
+        # for kth iteration, operate on mat_a[k:m, k:n]
+        vec_u_k = mat_a[index_k:size_m, index_k].copy()
+        sigma_scala = na.norm(vec_u_k)
 
         # skip if column already zero
-        if sigma:
-            if mat_u[0, 0]:
-                sigma *= np.sign(mat_u[0, 0])
+        if sigma_scala:
+            if vec_u_k[0, 0]:
+                sigma_scala *= np.sign(vec_u_k[0, 0])
 
-            mat_u[0, 0] += sigma
+            vec_u_k[0, 0] += sigma_scala
 
-            # rho_scala = (2 / (u.T * u))
-            rho = 1 / (np.conj(sigma) * mat_u[0, 0])
+            # rho_scala = (2 / (||u||^2)) = 1 / (sigma_scala * u_k)
+            rho_scala = 1 / (np.conj(sigma_scala) * vec_u_k[0, 0])
 
             # kth column
-            mat_a[index_array_i, index_k] = 0.0
-            mat_a[index_k, index_k] = -sigma
+            mat_a[index_k:size_m, index_k] = 0.0
+            mat_a[index_k, index_k] = -sigma_scala
 
             # remaining columns
-            index_array_j = np.arange(index_k + 1, size_n, dtype=int)
-
-            mat_v = rho * (mat_u.T * mat_a[index_k:size_m, (index_k + 1):size_n])
-            # Hx = x - tau_x * u
-            mat_a[index_k:size_m, (index_k + 1):size_n] += ((mat_u * mat_v) * -1)
+            # tau[1, n] = rho * u.T[1, m] * x[m, n]
+            row_vec_tau_x = rho_scala * (vec_u_k.T * mat_a[index_k:size_m, (index_k + 1):size_n])
+            # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
+            mat_a[index_k:size_m, (index_k + 1):size_n] += (vec_u_k * (-row_vec_tau_x))
 
             # transform b
             if mat_b is not None:
-                # tau_scala = (rho * u.T * x)
-                tau = rho * (mat_u.T * mat_b[index_k:size_m, 0])[0, 0]
-                # Hy = y - tau_y * u
-                mat_b[index_k:size_m, 0] += (-tau * mat_u)
-        # end if sigma
+                # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
+                tau = rho_scala * (vec_u_k.T * mat_b[index_k:size_m, 0])
+                # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
+                mat_b[index_k:size_m, 0] += (vec_u_k * (-tau))
+        # end if sigma_scala
         if b_step:
             present_step()
 
