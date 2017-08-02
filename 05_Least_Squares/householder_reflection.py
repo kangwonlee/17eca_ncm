@@ -126,6 +126,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
         print('mat_a = %r' % mat_a)
         if (mat_b is not None):
             print('mat_b = %r' % mat_b)
+        input('Press Enter to continue')
 
     if b_step:
         present_step()
