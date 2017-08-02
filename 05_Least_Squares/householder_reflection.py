@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.linalg as na
 
 
 def main():
@@ -130,6 +131,18 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
     if b_step:
         present_step()
+
+    for k in range(min([m-1, n])):
+        # make elements below diagonal in the kth column
+        # Householder transformation
+
+        i = np.arange(0, m, dtype=int)
+        mat_u = mat_a[:, k].copy()
+        sigma = na.norm(mat_u)
+        print('sigma =', sigma)
+
+        # skip if column already zero
+        #if sigma
 
 
 if __name__ == '__main__':
