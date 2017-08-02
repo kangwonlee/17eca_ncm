@@ -149,6 +149,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
             mat_u[0, 0] += sigma
 
+            # rho_scala = (2 / (u.T * u))
             rho = 1 / (np.conj(sigma) * mat_u[0, 0])
 
             # kth column
@@ -159,11 +160,14 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             index_array_j = np.arange(index_k + 1, size_n, dtype=int)
 
             mat_v = rho * (mat_u.T * mat_a[index_k:size_m, (index_k + 1):size_n])
+            # Hx = x - tau_x * u
             mat_a[index_k:size_m, (index_k + 1):size_n] += ((mat_u * mat_v) * -1)
 
             # transform b
             if mat_b is not None:
+                # tau_scala = (rho * u.T * x)
                 tau = rho * (mat_u.T * mat_b[index_k:size_m, 0])[0, 0]
+                # Hy = y - tau_y * u
                 mat_b[index_k:size_m, 0] += (-tau * mat_u)
         # end if sigma
         if b_step:
