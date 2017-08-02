@@ -194,9 +194,13 @@ def main_qrsteps():
     print('     s                   y')
     print(np.column_stack([s, y]))
 
-    X = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
+    mat_x = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
 
-    qrsteps(X, y, True)
+    mat_r, mat_z, mat_residual = qrsteps(mat_x, y, True)
+    print('mat_residual = \n%s' % repr(mat_residual))
+
+    beta = na.solve(mat_r, mat_z)
+    print('beta = \n%s' % repr(beta))
 
 
 if __name__ == '__main__':
