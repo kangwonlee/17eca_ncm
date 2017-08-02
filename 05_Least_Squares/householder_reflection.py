@@ -129,19 +129,18 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
         print('mat_a = \n%r' % mat_a)
         if (mat_b is not None):
             print('mat_b = \n%r' % mat_b)
-        input('Press Enter to continue')
 
     if b_step:
         present_step()
 
     for index_k in range(0, min([size_m-1, size_n])):
-        # make elements below diagonal in the kth column
-        # Householder transformation
+        if b_step:
+            print(('make elements below diagonal in the %d-th column ' % (index_k + 1)).ljust(60, '='))
 
+        # Householder transformation
         index_array_i = np.arange(index_k, size_m, dtype=int)
         mat_u = mat_a[index_array_i, index_k].copy()
         sigma = na.norm(mat_u)
-        print('sigma =', sigma)
 
         # skip if column already zero
         if sigma:
@@ -151,7 +150,6 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             mat_u[0, 0] += sigma
 
             rho = 1 / (np.conj(sigma) * mat_u[0, 0])
-            print('rho = %r' % rho)
 
             # kth column
             mat_a[index_array_i, index_k] = 0.0
@@ -160,20 +158,8 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             # remaining columns
             index_array_j = np.arange(index_k + 1, size_n, dtype=int)
 
-            print('(before) mat_a= \n%s' % repr(mat_a))
-            print('mat_a.shape = \n%s' % repr(mat_a.shape))
-            print('index_array_i = \n%s' % repr(index_array_i))
-            print('index_array_j = \n%s' % repr(index_array_j))
-
-            # mat_a_i_rows = mat_a[index_k:size_m, (index_k + 1):size_n]
-            # mat_a_ij = mat_a_i_rows[:, index_array_j]
-            # print('(before) mat_a_ij = %s' % repr(mat_a_ij))
-
             mat_v = rho * (mat_u.T * mat_a[index_k:size_m, (index_k + 1):size_n])
             mat_a[index_k:size_m, (index_k + 1):size_n] += ((mat_u * mat_v) * -1)
-
-            # print('(after) mat_a_ij = %s' % repr(mat_a_ij))
-            print('(after) mat_a= \n%s' % repr(mat_a))
 
             # transform b
             if mat_b is not None:
@@ -196,7 +182,7 @@ def main_qrsteps():
 
     mat_x = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
 
-    mat_qr_r, mat_qr_z, mat_residual_qr = qrsteps(mat_x, y, False)
+    mat_qr_r, mat_qr_z, mat_residual_qr = qrsteps(mat_x, y, True)
     mat_beta_qr = na.solve(mat_qr_r, mat_qr_z)
     mat_y_x_beta = y - mat_x * mat_beta_qr
 
