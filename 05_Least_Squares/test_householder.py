@@ -7,6 +7,19 @@ import householder_reflection as hh
 
 
 class TestHouseHolder(unittest.TestCase):
+    def test_householder_k(self):
+        x = np.matrix([[3, 2]]).T
+        k = 0
+
+        hx, rho, u = hh.householder_k(x, k)
+        # hx supposed to have same size as x
+        self.assertAlmostEqual(na.norm(x), na.norm(hx))
+
+        # x - hx  // u
+        x_minus_hx = x - hx
+        dot_product = x_minus_hx.T * u
+        self.assertAlmostEqual(na.norm(x_minus_hx) * na.norm(u), dot_product[0, 0])
+
     def test_householder_xy(self):
         x = np.matrix([[3, 2]]).T
         y = np.matrix([[7, -4]]).T
