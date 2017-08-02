@@ -121,7 +121,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     assert isinstance(mat_a, np.matrix)
     assert isinstance(mat_b, np.matrix) or (mat_b is None)
 
-    m, n = mat_a.shape
+    size_m, size_m = mat_a.shape
 
     def present_step():
         print('mat_a = %r' % mat_a)
@@ -132,17 +132,62 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     if b_step:
         present_step()
 
-    for k in range(min([m-1, n])):
+    for index_k in range(0, min([size_m-1, size_m])):
         # make elements below diagonal in the kth column
         # Householder transformation
 
-        i = np.arange(0, m, dtype=int)
-        mat_u = mat_a[:, k].copy()
+        index_array_i = np.arange(index_k, size_m, dtype=int)
+        mat_u = mat_a[index_array_i, index_k].copy()
         sigma = na.norm(mat_u)
         print('sigma =', sigma)
 
         # skip if column already zero
-        #if sigma
+        if sigma:
+            if mat_u[0, 0]:
+                sigma *= np.sign(mat_u[0, 0])
+
+            mat_u[0, 0] += sigma
+
+            rho = 1 / (np.conj(sigma) * mat_u[0, 0])
+            print('rho = %r' % rho)
+
+            # kth column
+            mat_a[index_array_i, index_k] = 0.0
+            mat_a[index_k, index_k] = -sigma
+
+            # remaining columns
+            index_array_j = np.arange(index_k + 1, size_m, dtype=int)
+
+            print('(before) mat_a= %s' % str(mat_a))
+            print('mat_a.shape = %r' % str(mat_a.shape))
+            print('index_array_i = %r' % index_array_i)
+            print('index_array_j = %r' % index_array_j)
+
+            mat_a_i_rows = mat_a[index_array_i, :]
+            mat_a_ij = mat_a_i_rows[:, index_array_j]
+
+            mat_v = rho * (mat_u.T * mat_a_ij)
+            mat_a_ij += ((mat_u * mat_v) * -1)
+
+            print('(after) mat_a= %s' % str(mat_a))
+
+            # transform b
+            if mat_b is not None:
+                # print('mat_b.shape = %s' % repr(mat_b.shape))
+                # print('mat_b[index_array_i, 0].shape = %s' % repr(mat_b[index_array_i, 0].shape))
+                # print('mat_u.shape = %s' % repr(mat_u.shape))
+
+                mat_b_i_rows = mat_b[index_array_i, 0]
+
+                tau = rho * (mat_u.T * mat_b_i_rows)[0, 0]
+                # print('(-tau * mat_u).shape = %s' % repr((-tau * mat_u).shape))
+                # print('(mat_b[index_array_i, 0]).shape = %s' % repr((mat_b[index_array_i, 0]).shape))
+                mat_b_i_rows += (-tau * mat_u)
+        # end if sigma
+        if b_step:
+            present_step()
+
+    return mat_a, mat_b
 
 
 def main_qrsteps():
@@ -154,7 +199,7 @@ def main_qrsteps():
 
     X = np.column_stack([np.power(s, 2), s, np.ones_like(s)])
 
-    qrsteps(X, y)
+    qrsteps(X, y, True)
 
 
 if __name__ == '__main__':
