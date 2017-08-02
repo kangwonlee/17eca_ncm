@@ -131,13 +131,8 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
     m_height_a, n_width_a = mat_a.shape
 
-    def present_step():
-        print('mat_a = \n%r' % mat_a)
-        if (mat_b is not None):
-            print('mat_b = \n%r' % mat_b)
-
     if b_step:
-        present_step()
+        present_step(mat_a, mat_b)
 
     for index_k in range(0, min([m_height_a - 1, n_width_a])):
         if b_step:
@@ -172,10 +167,16 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
                 get_hx_inplace(index_k, 0, rho_scala, col_vec_u, mat_b)
         # end if sigma_scala
         if b_step:
-            present_step()
+            present_step(mat_a, mat_b)
 
     # return economical R
     return mat_a[:n_width_a, :], mat_b[:n_width_a, :], mat_b[n_width_a:, :]
+
+
+def present_step(mat_a, mat_b):
+    print('mat_a = \n%r' % mat_a)
+    if (mat_b is not None):
+        print('mat_b = \n%r' % mat_b)
 
 
 def get_hx_inplace(row_begin, column_begin, rho_scala, col_vec_u, mat_x):
