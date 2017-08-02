@@ -3,7 +3,7 @@ import numpy as np
 import numpy.linalg as na
 
 
-def main():
+def main_householder():
     x = np.matrix([[3, 2]]).T
     y = np.matrix([[7, -4]]).T
 
@@ -158,4 +158,13 @@ def main_qrsteps():
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    if 1 < len(sys.argv):
+        if sys.argv[1].startswith('qr'):
+            main_qrsteps()
+        elif sys.argv[1].startswith('householder'):
+            main_householder()
+        else:
+            raise ValueError(sys.argv[1])
+    else:
+        raise ValueError('No script argument')
