@@ -17,9 +17,10 @@ class TestHouseHolder(unittest.TestCase):
         self.assertAlmostEqual(na.norm(x), na.norm(hx))
         self.assertAlmostEqual(na.norm(y), na.norm(hy))
 
+        # x - hx  // u
         x_minus_hx = x - hx
-        err_x = u - x_minus_hx
-        self.assertAlmostEqual(0.0, na.norm(err_x))
+        dot_product = x_minus_hx.T * u
+        self.assertAlmostEqual(na.norm(x_minus_hx) * na.norm(u), dot_product[0, 0])
 
         # y - hy  // u
         y_minus_hy = y - hy
