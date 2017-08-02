@@ -87,7 +87,7 @@ def householder_k(x, k):
     :return: 
     """
     # find u bisecting x and x axis
-    sigma = np.sqrt((x.T * x)[0, 0])
+    sigma = na.norm(x)
     e_k = np.matrix(np.zeros_like(x))
     e_k[k, 0] = 1.0
     u = x + sigma * e_k
