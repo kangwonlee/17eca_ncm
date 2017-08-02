@@ -145,7 +145,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
         # Householder transformation
         # for kth iteration, operate on mat_a[k:m, k:n]
-        col_vec_u = mat_a[index_k:m_height_a, index_k].copy()
+        col_vec_u = mat_a[index_k:, index_k].copy()
         sigma_scala = na.norm(col_vec_u)
 
         # skip if column already zero
@@ -161,21 +161,21 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
             rho_scala = 1 / (np.conj(sigma_scala) * col_vec_u[0, 0])
 
             # kth column
-            mat_a[index_k:m_height_a, index_k] = 0.0
+            mat_a[index_k:, index_k] = 0.0
             mat_a[index_k, index_k] = -sigma_scala
 
             # remaining columns
             # tau[1, n] = rho * u.T[1, m] * x[m, n]
-            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[index_k:m_height_a, (index_k + 1):n_width_a])
+            row_vec_tau_x = rho_scala * (col_vec_u.T * mat_a[index_k:, (index_k + 1):])
             # Hx[m, n] = x[m, n] -  u[m, 1] * tau_x[1, n]
-            mat_a[index_k:m_height_a, (index_k + 1):n_width_a] += (col_vec_u * (-row_vec_tau_x))
+            mat_a[index_k:, (index_k + 1):] += (col_vec_u * (-row_vec_tau_x))
 
             # transform b
             if mat_b is not None:
                 # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
-                tau = rho_scala * (col_vec_u.T * mat_b[index_k:m_height_a, :])
+                tau = rho_scala * (col_vec_u.T * mat_b[index_k:, :])
                 # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
-                mat_b[index_k:m_height_a, :] += (col_vec_u * (-tau))
+                mat_b[index_k:, :] += (col_vec_u * (-tau))
         # end if sigma_scala
         if b_step:
             present_step()
