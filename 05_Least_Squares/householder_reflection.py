@@ -169,13 +169,7 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
             # transform b
             if mat_b is not None:
-                row_begin = index_k
-                column_begin = 0
-
-                # tau_y[1, 1] = (rho * u.T[1, m] * y[m, 1])
-                row_vec_tau_y = rho_scala * (col_vec_u.T * mat_b[row_begin:, column_begin:])
-                # Hy[m, 1] = y[m, 1] - u[m, 1] * tau_y[1, 1]
-                mat_b[row_begin:, column_begin:] += (col_vec_u * (-row_vec_tau_y))
+                get_hx_inplace(index_k, 0, rho_scala, col_vec_u, mat_b)
         # end if sigma_scala
         if b_step:
             present_step()
