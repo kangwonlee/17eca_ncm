@@ -116,6 +116,10 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
     :return: R, bout
     """
 
+    # check type
+    assert isinstance(mat_a, np.matrix)
+    assert isinstance(mat_b, np.matrix) or (mat_b is None)
+
 
 if __name__ == '__main__':
     main()
