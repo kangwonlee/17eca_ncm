@@ -122,12 +122,10 @@ def qrsteps(mat_a, mat_b=None, b_step=False):
 
     m, n = mat_a.shape
 
-    if mat_b is None:
-        mat_b = np.matrix(np.zeros((m, 1)))
-
     def present_step():
         print('mat_a = %r' % mat_a)
-        print('mat_b = %r' % mat_b)
+        if (mat_b is not None):
+            print('mat_b = %r' % mat_b)
 
     if b_step:
         present_step()
