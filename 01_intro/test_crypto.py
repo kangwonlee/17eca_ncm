@@ -35,6 +35,20 @@ class TestCrypto(unittest.TestCase):
 
         self.assertAlmostEqual(0.0, norm)
 
+    def test_convert_to_ascii(self):
+        p = 97
+        c1 = chr(169)
+        c2 = chr(174)
+        v1 = 127
+        v2 = 128
+
+        input_str = 'TV'
+        x_int_array = crypto.convert_2_int_array(input_str, c1, v1, c2, v2, p)
+        result = crypto.convert_to_ascii(x_int_array, c1, v1, c2, v2)
+        self.assertEqual(len(input_str), len(result))
+
+        self.assertEqual(input_str, result)
+
 
 if __name__ == '__main__':
     unittest.main()
