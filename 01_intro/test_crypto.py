@@ -12,6 +12,10 @@ class TestCrypto(unittest.TestCase):
 
         self.assertEqual(expected_for_now, encrypted)
 
+        decrypted = crypto.crypto(encrypted)
+
+        self.assertEqual(input_str, decrypted)
+
 
 if __name__ == '__main__':
     unittest.main()
