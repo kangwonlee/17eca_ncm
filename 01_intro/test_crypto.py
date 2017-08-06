@@ -1,5 +1,8 @@
 import unittest
 
+import numpy as np
+import numpy.linalg as na
+
 import crypto
 
 
@@ -25,8 +28,12 @@ class TestCrypto(unittest.TestCase):
 
         input_str = 'TV'
         x_int_array = crypto.convert_2_int_array(input_str, c1, v1, c2, v2, p)
-
         self.assertEqual(len(input_str), len(x_int_array))
+
+        expected_array = np.array([52, 54])
+        norm = na.norm(expected_array - x_int_array)
+
+        self.assertAlmostEqual(0.0, norm)
 
 
 if __name__ == '__main__':
