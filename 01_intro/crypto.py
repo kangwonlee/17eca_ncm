@@ -48,12 +48,33 @@ def crypto(x_str):
 
 
 def convert_2_int_array(x_str, c1, v1, c2, v2, p):
-    x_char_array = np.array(tuple(x_str), dtype='|U1')
-    x_char_array[x_char_array == c1] = v1
-    x_char_array[x_char_array == c2] = v2
-
+    """
     # Convert to integers mod p.
-    x_int_array = np.mod((x_char_array.view(np.int8) - 32), p)
+
+    :param x_str: 
+    :param chr c1: 
+    :param int v1: 
+    :param chr c2: 
+    :param int v2: 
+    :param int p: 
+    :return: 
+    """
+
+    x_int_list = []
+    for x_char in x_str:
+        append_this_int = ord(x_char)
+        if append_this_int == ord(c1):
+            append_this_int = v1
+        elif append_this_int == ord(c2):
+            append_this_int = v2
+
+        x_int_list.append(append_this_int)
+
+    x_int_no_offset_array = np.array(x_int_list, dtype=np.int8)
+
+    x_int_offset_array = x_int_no_offset_array - 32
+
+    x_int_array = np.mod(x_int_offset_array, p)
 
     return x_int_array
 
