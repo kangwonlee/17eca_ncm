@@ -13,6 +13,8 @@ class TestCrypto(unittest.TestCase):
         encrypted = crypto.crypto(input_str)
         expected_for_now = '''®yyyhyyyPyyy8yyy yyyiyyyQyyy9yyy!yyyjyyyRyyy:yyy"yyykyyySyyy;yyy#yyylyyyTyyy<yyy$yyymyyyUyyy=yyy%yyynyyyVyyy>yyy&yyyoyyyWyyy?yyy'yyypyyyXyyy@yyy(yyyqyyyYyyyAyyy)yyyryyyZyyyByyy*yyysyyy[yyyCyyytjjj/jjjKjjjgjjj"jjj>jjjZjjjvjjj1jjjMjjjijjj$jjj@jjj\jjjxjjj3jjjOjjjkjjj&jjjBjjj^jjjzjjj5jjjQjjjmjjj(jjjDjjj`jjj|jjj7jjjSjjjojjj*jjjFjjjbjjj~jjj9jjjUjjjqjjj,jjjHjjjdjjj®jjj;jjjWjjjsjjj.jjjJjjj'''
 
+        self.assertEqual(len(input_str), len(expected_for_now))
+
         self.assertEqual(expected_for_now, encrypted)
 
         decrypted = crypto.crypto(encrypted)
