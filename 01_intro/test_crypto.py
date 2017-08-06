@@ -8,7 +8,7 @@ import crypto
 
 class TestCrypto(unittest.TestCase):
     def test_crypto(self):
-        input_str = ''.join([chr(i) for i in range(32, (95+32+1))])
+        input_str = ''.join([chr(i) for i in range(32, (95 + 32))])
 
         encrypted = crypto.crypto(input_str)
         expected_for_now = '''®yyyhyyyPyyy8yyy yyyiyyyQyyy9yyy!yyyjyyyRyyy:yyy"yyykyyySyyy;yyy#yyylyyyTyyy<yyy$yyymyyyUyyy=yyy%yyynyyyVyyy>yyy&yyyoyyyWyyy?yyy'yyypyyyXyyy@yyy(yyyqyyyYyyyAyyy)yyyryyyZyyyByyy*yyysyyy[yyyCyyytjjj/jjjKjjjgjjj"jjj>jjjZjjjvjjj1jjjMjjjijjj$jjj@jjj\jjjxjjj3jjjOjjjkjjj&jjjBjjj^jjjzjjj5jjjQjjjmjjj(jjjDjjj`jjj|jjj7jjjSjjjojjj*jjjFjjjbjjj~jjj9jjjUjjjqjjj,jjjHjjjdjjj®jjj;jjjWjjjsjjj.jjjJjjj'''
@@ -48,6 +48,21 @@ class TestCrypto(unittest.TestCase):
         self.assertEqual(len(input_str), len(result))
 
         self.assertEqual(input_str, result)
+
+    def test_convert_to_ascii_long(self):
+        p = 97
+        c1 = chr(169)
+        c2 = chr(174)
+        v1 = 127
+        v2 = 128
+
+        input_str = ''.join([chr(i) for i in range(32, (95 + 32))])
+        x_int_array = crypto.convert_2_int_array(input_str, c1, v1, c2, v2, p)
+        result = crypto.convert_to_ascii(x_int_array, c1, v1, c2, v2)
+        self.assertEqual(len(input_str), len(result))
+
+        for c_input, c_result in zip(input_str, result):
+            self.assertEqual(c_input, c_result)
 
 
 if __name__ == '__main__':
