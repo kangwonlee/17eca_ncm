@@ -51,6 +51,21 @@ class TestCrypto(unittest.TestCase):
 
         self.assertEqual(input_str, result)
 
+    def test_convert_to_ascii(self):
+        p = 97
+        c1 = chr(169)
+        c2 = chr(174)
+        v1 = 127
+        v2 = 128
+
+        x_int_array = np.array((17, 53))
+        result = crypto.convert_to_ascii(x_int_array, c1, v1, c2, v2)
+        self.assertEqual(len(x_int_array), len(result))
+
+        expected = '1U'
+
+        self.assertEqual(expected, result)
+
     def test_convert_to_ascii_long(self):
         p = 97
         c1 = chr(169)
